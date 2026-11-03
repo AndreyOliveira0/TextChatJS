@@ -7,7 +7,7 @@ const WebSocket = require("ws");
 const server = new WebSocket.Server({ host: config.host, port: config.port });
 
 // Packet utils
-const { packetEncode, packetDecode } = require("./utils/packet.js")(server);
+const { packetEncode, packetDecode } = require("../shared/utils/packet.js");
 const packets = new PacketManager(server);
 
 // Add broadcast function for ease of usage since
@@ -19,7 +19,11 @@ server.broadcast = function (type, data) {
 };
 server.send = function(ws, type, data) {
 	if (ws.readyState === WebSocket.OPEN) {
-		ws.send(packetEncode(type, data));
+		try {
+			ws.send(packetEncode(type, data));
+		} catch (error) {
+			server.writeLog(`(ERROR) ${error.message}`);
+		}
 	}
 }
 const { writeLog } = require("./modules/log.js")();
@@ -63,7 +67,13 @@ server.on('connection', (ws) => {
 	
 	// Client packets
 	ws.on("message", (data) => {
-		const packet = packetDecode(data);
+		let packet;
+		try {
+			packet = packetDecode(data);
+		} catch (error) {
+			server.writeLog(`(ERROR) ${error.message}`);
+		}
+
 		if (!packet) {
 			ws.close(1002, "Invalid packet.");
 			return;

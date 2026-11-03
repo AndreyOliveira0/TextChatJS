@@ -17,7 +17,12 @@ packets.set("chat", function(server, client, ws, args) {
 		message = message.slice(0, config.chatMaxLength);
 	}
 
-	const argsToSend = { message, sender: client.id }
+	const argsToSend = {
+		message,
+		sender: client.id,
+		timestamp: Date.now()
+	};
+
 	if(config.roomsEnabled) {
 		// Send message to all users on the room
 		client.room.send("chat", argsToSend);

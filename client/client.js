@@ -7,7 +7,7 @@ const server_config = require("./modules/server_config.js");
 const ws = new WebSocket(config.host);
 
 // Packet utils
-const { packetEncode, packetDecode } = require("./utils/packet.js");
+const { packetEncode, packetDecode } = require("../shared/utils/packet.js");
 const packets = new PacketManager(ws);
 
 // Implement necessary socket variables/functions
@@ -34,7 +34,12 @@ ws.sendPacket = function(type, data) {
 		console.error("(ERROR) Cannot send packet: Not connected.");
 		return false;
 	}
-	ws.send(packetEncode(type, data));
+	
+	try {
+		ws.send(packetEncode(type, data));
+	} catch (error) {
+		console.error(`(ERROR) ${error.message}`);
+	}
 	return true;
 };
 ws.clients = new Map();
@@ -75,7 +80,13 @@ ws.onclose = (event) => {
 };
 
 ws.onmessage = (event) => {
-	const packet = packetDecode(event.data);
+	let packet;
+	try {
+		packet = packetDecode(event.data);
+	} catch (error) {
+		console.error(`(ERROR) ${error.message}`);
+	}
+
 	if (!packet) {
 		ws.close(1002, "Invalid packet.");
 		return;

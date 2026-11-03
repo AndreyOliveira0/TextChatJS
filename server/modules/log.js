@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const config = require("./config.js");
-const { getTimeString } = require("../utils/time.js");
+const { getTimeString } = require("../../shared/utils/time.js");
 
 module.exports = () => {
 	logStream = null;
