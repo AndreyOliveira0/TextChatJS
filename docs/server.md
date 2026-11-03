@@ -40,7 +40,7 @@
   * Arguments:
     * "sender": Client ID from sender of the message, leave empty for server messages.
     * "message": Message to send.
-    * "timestamp": "Date" type object for the time the message is sent.
+    * "timestamp": Date/timestamp for the time the message is sent, "number" type variable.
 
 ### Rooms
 * "register_room": Adds a new room's data into the map.
