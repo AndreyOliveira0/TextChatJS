@@ -21,7 +21,7 @@ packets.set("handshake", function(ws, args) {
 	server_config.chatMaxLength = args.chatMaxLength;
 	server_config.rateLimit = args.rateLimit;
 	server_config.roomsEnabled = args.roomsEnabled;
-	server_config.roomsMax = args.roomsMax;
+	server_config.roomsMaxUsers = args.roomsMaxUsers;
 	ws.authenticated = true;
 });
 
@@ -30,7 +30,7 @@ packets.set("client_join", function(ws, args) {
 	const id = args.id;
 	const username = args.username;
 	ws.clients.set(args.id, { id, username });
-	console.log(`${username} connected to the server.`);
+	ws.parent.log(`${username} connected to the server.`);
 });
 
 // Erases client data due to disconnection
@@ -41,15 +41,15 @@ packets.set("client_left", function(ws, args) {
 		// Suppress warning if you're inside a room
 		switch(args.reason) {
 			case "kick": {
-				console.log(`${username} got kicked from the server.`);
+				ws.parent.log(`${username} got kicked from the server.`);
 				break;
 			}
 			case "disconnect": {
-				console.log(`${username} left the server.`);
+				ws.parent.log(`${username} left the server.`);
 				break;
 			}
 			default: {
-				console.log(`${username} left the server. (Reason: "${args.reason}")`);
+				ws.parent.log(`${username} left the server. (Reason: "${args.reason}")`);
 				break;
 			}
 		}

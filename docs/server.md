@@ -16,7 +16,7 @@
     * "chatMaxLength": Value from "MESSAGE_MAX_LENGTH".
     * "rateLimit": Value from "RATE_LIMIT".
     * "roomsEnabled": Value from "ROOMS_ENABLED".
-    * "roomsMax": Value from "ROOMS_MAX".
+    * "roomsMaxUsers": Value from "ROOMS_MAX_USERS".
     * "clients": Client array: {id, username}
     * "id": Assigned client ID to the new client.
     * "username": Username the server assigned to you in case of duplicated/invalid names.
@@ -54,6 +54,7 @@
 * "quit_room": Client left the connected room.
   * Arguments:
     * "id": Client ID.
+    * "room": Room ID.
     * "reason": Possible reasons can be "disconnect, "server_kick" or "kick".
 
 * "room_closed": Room closed by the owner, all users inside have their room ID reset.

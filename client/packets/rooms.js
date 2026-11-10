@@ -33,39 +33,46 @@ packets.set("join_room", function(ws, args) {
 	if(client.id == ws.id) {
 		ws.inRoom = room;
 		if(room.owner.id == client.id) {
-			console.log(`You have successfully created the room \"${room.name}\"!`)
+			ws.parent.log(`You have successfully created the room \"${room.name}\"!`)
 		} else {
-			console.log(`You have joined the room \"${room.name}\"!`)
+			ws.parent.log(`You have joined the room \"${room.name}\"!`)
 		}
 	} else if(room == ws.inRoom) {
-		console.log(`${client.username} joined the room.`);
+		ws.parent.log(`${client.username} joined the room.`);
 	}
 });
 
 // A client left a room, update this client's data
 packets.set("quit_room", function(ws, args) {
 	const client = ws.clients.get(args.id);
-	const room = client.room;
+	const room = ws.rooms.get(args.room);
 	const index = room.clients.indexOf(client.id);
 	if (index > -1) room.clients.splice(index, 1);
+
+	// If you are the one who left the room, ws uses inRoom instead
+	if(client.id == ws.id) {
+		ws.inRoom = undefined;
+	} else {
+		client.room = undefined;
+	}
 
 	const username = client.id != ws.id ? client.username : "You";
 
 	switch(args.reason) {
 		case "server_kick": {
-			console.log(`${username} got kicked from the room by the server operator.`);
+			ws.parent.log(`${username} got kicked from the room by the server operator.`);
 			break;
 		}
 		case "kick": {
-			console.log(`${username} got kicked from the room.`);
+			ws.parent.log(`${username} got kicked from the room.`);
 			break;
 		}
 		case "disconnect": {
-			console.log(`${username} left the room.`);
+			ws.parent.log(`${username} left the room.`);
 			break;
 		}
 		default: {
-			console.log(`${username} left the room. (Reason: "${args.reason}")`);
+			ws.parent.log(`${username} left the room. (Reason: "${args.reason}")`);
 			break;
 		}
 	}
@@ -74,16 +81,17 @@ packets.set("quit_room", function(ws, args) {
 	if(yourRoom == room && room.owner.id == client.id) {
 		// Owner of the room left
 		switch(args.reason) {
-			case "server_kick", "kick": {
-				console.log("This room will be closed because the owner got kicked.");
+			case "server_kick":
+			case "kick": {
+				ws.parent.warn("This room will be closed because the owner got kicked.");
 				break;
 			}
 			case "disconnect": {
-				console.log("This room will be closed because the owner left.");
+				ws.parent.warn("This room will be closed because the owner left.");
 					break;
 			}
 			default: {
-				console.log(`This room will be closed because the owner left. (Reason: "${args.reason}")`);
+				ws.parent.warn(`This room will be closed because the owner left. (Reason: "${args.reason}")`);
 				break;
 			}
 		}
@@ -96,6 +104,9 @@ packets.set("room_closed", function(ws, args) {
 	room.clients.forEach(id => {
 		const client = ws.clients.get(id);
 		if(client.room == room) {
+			if (client.id === ws.id) {
+				ws.inRoom = undefined;
+			}
 			client.room = undefined;
 		}
 	});

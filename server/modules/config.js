@@ -11,7 +11,7 @@ const config = {
 	chatMaxLength: parseInt(process.env.MESSAGE_MAX_LENGTH) || 100,
 	rateLimit: parseInt(process.env.RATE_LIMIT) || 5,
 	roomsEnabled: process.env.ROOMS_ENABLED === "true",
-	roomsMax: parseInt(process.env.ROOMS_MAX) || 10,
+	roomsMaxUsers: parseInt(process.env.ROOMS_MAX_USERS) || 10,
 	handshakeTimeout: parseInt(process.env.HANDSHAKE_TIMEOUT) || 10000,
 	cliEnabled: process.env.SERVER_ENABLE_CLI === "true",
 	logEnabled: process.env.SERVER_LOG === "true",

@@ -32,8 +32,8 @@ class Room {
 
 	// Room settings
 	changeMaxClients(maxClients) {
-		if(isNaN(maxClients) || maxClients === undefined) maxClients = config.roomsMax;
-		this.maxClients = Math.max(1, Math.min(config.roomsMax, maxClients)); // ensure room's max clients is in bounds
+		if(isNaN(maxClients) || maxClients === undefined) maxClients = config.roomsMaxUsers;
+		this.maxClients = Math.max(1, Math.min(config.roomsMaxUsers, maxClients)); // ensure room's max clients is in bounds
 	}
 	changePassword(password) {
 		this.password = password ?? "";
@@ -47,12 +47,13 @@ class Room {
 		client.room = this;
 	}
 	removeClient(client, reason = "disconnect") {
+		const roomID = client.room.id;
 		this.clients.delete(client.id);
 		client.room = undefined;
 
 		// Owner of the room left, delete room.
 		if(reason == "disconnect") this.server.writeLog(`(LOG) ${client.username} left the room: ${this.name}`);
-		this.server.broadcast("quit_room", { id: client.id, reason });
+		this.server.broadcast("quit_room", { id: client.id, room: roomID, reason });
 		if(this.owner.id == client.id) {
 			this.close();
 		}

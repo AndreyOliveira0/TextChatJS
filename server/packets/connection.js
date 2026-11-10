@@ -27,7 +27,7 @@ packets.set("handshake", function(server, client, ws, args) {
 		chatMaxLength: config.chatMaxLength,
 		rateLimit: config.rateLimit,
 		roomsEnabled: config.roomsEnabled,
-		roomsMax: config.roomsMax,
+		roomsMaxUsers: config.roomsMaxUsers,
 		clients: server.manager.getClientList(),
 		id: client.id,
 		username

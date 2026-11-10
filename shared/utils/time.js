@@ -1,5 +1,4 @@
 function getTimeString(date) {
-	console.log(typeof date);
 	const _date = date ?? new Date(Date.now());
 	const hours = _date.getHours().toString().padStart(2, "0");
 	const minutes = _date.getMinutes().toString().padStart(2, "0");

@@ -9,9 +9,9 @@ packets.set("chat", function(ws, args) {
 	const timestamp = `[${getTimeString(new Date(Number.isFinite(args.timestamp) ? args.timestamp : Date.now()))}]`;
 	if(id !== undefined) {
 		let username = ws.clients.get(id)?.username;
-		console.log(`${timestamp} (CHAT) ${username}: ${args.message}`);
+		ws.parent.log(`${timestamp} (CHAT) ${username}: ${args.message}`);
 	} else {
-		console.log(`${timestamp} SERVER: ${args.message}`);
+		ws.parent.log(`${timestamp} SERVER: ${args.message}`);
 	}
 });
 

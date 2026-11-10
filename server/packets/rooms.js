@@ -12,14 +12,25 @@ packets.set("create_room", function(server, client, ws, args) {
 
 	// Invalid room data
 	const roomName = (args.name ?? "").trim();
+	const roomPass = args.password;
 	if(roomName.length == 0) {
 		server.send(ws, "error", {error: "Invalid room name."});
 		return;
 	}
 
+	if(roomName.length > 24) {
+		server.send(ws, "error", {error: `Room name is too long: ${roomName.length} / 24 digits.`});
+		return;
+	}
+
+	if(roomPass && roomPass.length > 24) {
+		server.send(ws, "error", {error: `Room password is too long: ${roomPass.length} / 24 digits.`});
+		return;
+	}
+
 	const room = server.manager.createRoom({
-		name: args.name,
-		password: args.password,
+		name: roomName,
+		password: roomPass,
 		maxClients: args.maxClients,
 		owner: client
 	});
