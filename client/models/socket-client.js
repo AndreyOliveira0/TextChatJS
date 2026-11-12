@@ -96,6 +96,10 @@ class ChatSocketClient {
 				this.log("Disconnected from the server.");
 				break;
 			}
+			case 1009: {
+				this.log("Disconnected: Max packet size violation.");
+				break;
+			}
 			case 4000: {
 				this.log(`Disconnected: ${event.reason}`);
 				break;

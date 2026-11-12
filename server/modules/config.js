@@ -5,6 +5,7 @@ const config = {
 	// Connection settings
 	host: process.env.SERVER_HOST || "0.0.0.0",
 	port: parseInt(process.env.SERVER_PORT) || 3000,
+	maxPayload: parseInt(process.env.SERVER_MAX_PAYLOAD) || 16384,
 
 	// Server settings
 	maxClients: parseInt(process.env.SERVER_MAX_CONNECTIONS) || 0,

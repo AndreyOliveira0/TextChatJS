@@ -8,8 +8,13 @@ class ChatSocketServer {
 	constructor(config) {
 		const _host = config.host;
 		const _port = config.port;
+		const _maxPayload = config.maxPayload;
 
-		const server = new WebSocket.Server({ host: _host, port: _port });
+		const server = new WebSocket.Server({
+			host: _host,
+			port: _port,
+			maxPayload: _maxPayload
+		});
 		server.parent = this;
 		this.server = server;
 
