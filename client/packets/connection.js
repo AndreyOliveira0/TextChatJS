@@ -25,6 +25,18 @@ packets.set("handshake", function(ws, args) {
 	ws.authenticated = true;
 });
 
+// Server response from ping check
+packets.set("pong", function(ws, args) {
+	const timestamp = args.timestamp;
+	if(typeof timestamp !== "number" || !Number.isFinite(timestamp) || timestamp <= 0) {
+		ws.parent.error("Invalid timestamp formatting sent!");
+		return;
+	}
+
+	const latency = Date.now() - args.timestamp;
+	ws.parent.log(`> Latency: ${latency}`);
+});
+
 // Received data from a new client
 packets.set("client_join", function(ws, args) {
 	const id = args.id;

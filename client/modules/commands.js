@@ -178,6 +178,14 @@ module.exports = function(ws) {
 				ws.parent.log(output);
 			}
 		},
+		ping: {
+			description: "Send a ping packet to the server.",
+			args: 0,
+			execute: () => {
+				const timestamp = Date.now();
+				ws.sendPacket("ping", { timestamp });
+			}
+		},
 		quit: {
 			description: "Disconnect from the server",
 			args: 0,

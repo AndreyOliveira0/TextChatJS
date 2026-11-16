@@ -16,6 +16,10 @@
   * Arguments:
     * "username": Client username.
 
+* "ping": Sends a ping request to the server.
+  * Arguments:
+    * "timestamp": Timestamp of the moment you sent the request.
+
 ### Chat
 * "chat": Send message to chat.
   * Arguments:

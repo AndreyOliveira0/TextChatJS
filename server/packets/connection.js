@@ -44,4 +44,14 @@ packets.set("handshake", function(server, client, ws, args) {
 	server.writeLog(`${username} connected to the server.`);
 });
 
+// Client is requesting latency
+packets.set("ping", function(server, _, ws, args) {
+	const timestamp = args.timestamp;
+	if(typeof timestamp !== "number" || !Number.isFinite(timestamp) || timestamp <= 0) {
+		server.send(ws, "error", { error: "Invalid timestamp formatting sent!" });
+		return;
+	}
+	server.send(ws, "pong", { timestamp });
+});
+
 module.exports = packets;

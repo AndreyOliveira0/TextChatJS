@@ -20,8 +20,11 @@
     * "clients": Client array: {id, username}
     * "id": Assigned client ID to the new client.
     * "username": Username the server assigned to you in case of duplicated/invalid names.
-
   * Note: Limits set by the server are enforced server-side for exploit prevention.
+
+* "pong": Client sent a request to get the latency value.
+  * Arguments:
+    * "timestamp": Timestamp of the moment the client sent the request.
 
 * "client_join": Broadcasts client connected.
   * Arguments:
