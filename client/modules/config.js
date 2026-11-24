@@ -14,9 +14,9 @@ const config = {
 			default: "ws://0.0.0.0:3000"
 		},
 		cli: {
-			type: "boolean",
+			type: "string",
 			short: "c",
-			default: true
+			default: "true"
 		}
 	},
 	allowPositionals: false,

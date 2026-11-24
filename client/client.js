@@ -6,7 +6,7 @@ const ChatSocketClient =  require("./models/socket-client.js");
 const client = new ChatSocketClient(config);
 
 // Setup command line interface for client commands
-const _cli = config.cli !== undefined ? config.cli : true;
+const _cli = (config.cli == "true");
 if(_cli) {
 	const setupCLI = require("./modules/cli.js")(client.ws);
 	setupCLI();

@@ -16,7 +16,12 @@ module.exports = function(server) {
 			description: "Sends a message to all clients, usage: say <message>",
 			args: 1,
 			execute: (args) => {
-				const message = args.join(" ");
+				let message = args.join(" ").trim();
+				if(message.length == 0) {
+					console.error(`(ERROR) Message cannot be empty.`);
+					return;
+				}
+
 				server.broadcast("chat", { message });
 				server.writeLog(`SERVER: ${message}`);
 			}

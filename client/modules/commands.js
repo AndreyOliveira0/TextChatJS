@@ -24,9 +24,13 @@ module.exports = function(ws) {
 				}
 
 				// Block messages that are too long (This is also handled in the server-side for safety)
-				let message = args.join(" ");
-				if(message.length > server_config.chatMaxLength) {
-					ws.parent.error(`Could not send message because its too long: ${message.length} / ${server_config.chatMaxLength} digits.`)
+				let message = args.join(" ").trim();
+				if(message.length == 0) {
+					ws.parent.error(`Message cannot be empty.`);
+					return;
+				}
+				else if(message.length > server_config.chatMaxLength) {
+					ws.parent.error(`Could not send message because its too long: ${message.length} / ${server_config.chatMaxLength} digits.`);
 					return;
 				}
 				ws.sendPacket("chat", { message });
